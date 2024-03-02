@@ -18,7 +18,37 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
+
 public class App {
+
+    public static void assignment2(String type, String fileName) {
+
+        if (!getFileExtension(fileName).equals("csv")) {
+            throw new RuntimeException("Wrong input file type");
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) { 
+            
+            // If PDF is input
+            if (type.equals("PDF")) {
+                createPdfTable(br);
+            }
+            // if XLS is input
+            else if (type.equals("XLS")) {
+                createXlsTable(br);
+            }
+            else {
+                throw new RuntimeException("Incorrect output file type entered");
+            }
+        }
+        catch (FileNotFoundException excpt) {
+            throw new RuntimeException("File not found error");
+        }
+        catch (IOException excpt) {
+            throw new RuntimeException("IOException encountered");
+        }
+
+    }
 
     public static void createPdfTable(BufferedReader br) {
 
@@ -87,25 +117,18 @@ public class App {
         }
     }
 
+    public static String getFileExtension(String filename) {
+        int i = filename.lastIndexOf(".");
+        return filename.substring(i + 1);
+    }
+
     public static void main( String[] args ) {
 
-        try (BufferedReader br = new BufferedReader(new FileReader(args[1]))) { 
-            
-            // If PDF is input
-            if (args[0].equals("PDF")) {
-                createPdfTable(br);
-            }
-            
-            // if XLS is input
-            else if (args[0].equals("XLS")) {
-                createXlsTable(br);
-            }
+        try { 
+            assignment2(args[0], args[1]);
         }
-        catch (FileNotFoundException excpt) {
-            System.out.println("File not found error");
-        }
-        catch (IOException excpt) {
-            System.out.println("IOException encountered");
+        catch (Exception excpt) {
+            System.out.println("Exception error");
         }
 
     }

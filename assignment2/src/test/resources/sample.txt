@@ -1,0 +1,2 @@
+For testing if txt files can be used as input.
+(Should throw exception)
